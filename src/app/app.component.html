@@ -1,0 +1,36 @@
+<div class="sidebar">
+  <div class="logo">
+    <div class="logo-icon"></div>
+    <span>DAWEB IES</span>
+  </div>
+  
+  <nav class="nav-links">
+    <a routerLink="/alumnos" routerLinkActive="active" class="nav-item">
+      <span style="width: 20px;">👥</span> Alumnos
+    </a>
+    <a routerLink="/profesores" routerLinkActive="active" class="nav-item">
+      <span style="width: 20px;">🎓</span> Profesores
+    </a>
+    <a routerLink="/asignaturas" routerLinkActive="active" class="nav-item">
+      <span style="width: 20px;">📚</span> Asignaturas
+    </a>
+    <a routerLink="/matriculas" routerLinkActive="active" class="nav-item">
+      <span style="width: 20px;">📋</span> Matrículas
+    </a>
+  </nav>
+
+  <div style="margin-top: auto; padding: 1rem; background: var(--bg-surface-lighter); border-radius: 12px; font-size: 0.8rem; color: var(--text-muted)">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem">
+      <span>🗄️</span>
+      <span>Backend Status</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem">
+      <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%"></div>
+      <span>Connected to :8080</span>
+    </div>
+  </div>
+</div>
+
+<main class="main-wrapper">
+  <router-outlet></router-outlet>
+</main>

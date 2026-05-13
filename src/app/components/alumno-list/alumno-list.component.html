@@ -1,0 +1,82 @@
+<header class="page-header">
+  <h1 class="page-title">Gestión de Alumnos</h1>
+  <p class="page-subtitle">Listado completo de estudiantes registrados en el sistema.</p>
+</header>
+
+<div *ngIf="error" class="error-message fade-in">
+  <span style="font-size: 1.5rem;">⚠️</span>
+  <div>
+    <strong>Error en la tabla Alumnos</strong>
+    <p>{{ error }}</p>
+  </div>
+</div>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>IPASEN</th>
+        <th style="text-align: right;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Skeleton Loading Rows -->
+      <ng-container *ngIf="loading">
+        <tr *ngFor="let i of [1,2,3,4,5]">
+          <td colspan="5"><div class="skeleton-row"></div></td>
+        </tr>
+      </ng-container>
+
+      <tr *ngFor="let alumno of alumnos; let i = index" class="fade-in" [style.animation-delay]="i * 0.05 + 's'">
+        <td><span class="badge">{{ alumno.id }}</span></td>
+        <td>{{ alumno.nombre }}</td>
+        <td>{{ alumno.apellidos }}</td>
+        <td><code>{{ alumno.ipasen }}</code></td>
+        <td style="text-align: right;">
+          <button class="btn btn-icon" (click)="editAlumno(alumno)" title="Editar">
+            ✏️
+          </button>
+        </td>
+      </tr>
+
+      <tr *ngIf="!loading && alumnos.length === 0 && !error">
+        <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+          No hay alumnos registrados.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Edit Modal Overlay -->
+<div class="modal-overlay" *ngIf="isEditing" (click)="cancelEdit()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Editar Alumno</h2>
+      <button class="close-btn" (click)="cancelEdit()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form #editForm="ngForm" (ngSubmit)="saveEdit()">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" [(ngModel)]="selectedAlumno!.nombre" required class="form-input">
+        </div>
+        <div class="form-group">
+          <label for="apellidos">Apellidos</label>
+          <input type="text" id="apellidos" name="apellidos" [(ngModel)]="selectedAlumno!.apellidos" required class="form-input">
+        </div>
+        <div class="form-group">
+          <label for="ipasen">IPASEN</label>
+          <input type="text" id="ipasen" name="ipasen" [(ngModel)]="selectedAlumno!.ipasen" required class="form-input">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!editForm.form.valid">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

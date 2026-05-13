@@ -1,0 +1,81 @@
+<header class="page-header">
+  <h1 class="page-title">Gestión de Matrículas</h1>
+  <p class="page-subtitle">Relación de alumnos y asignaturas con sus calificaciones.</p>
+</header>
+
+<div *ngIf="error" class="error-message fade-in">
+  <span style="font-size: 1.5rem;">⚠️</span>
+  <div>
+    <strong>Error en la tabla Matrículas</strong>
+    <p>{{ error }}</p>
+  </div>
+</div>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>ID Mat</th>
+        <th>Curso</th>
+        <th>Nota Media</th>
+        <th>Alumno</th>
+        <th>Asignatura</th>
+        <th>Profesor</th>
+        <th style="text-align: right;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="loading">
+        <tr *ngFor="let i of [1,2,3,4,5]">
+          <td colspan="7"><div class="skeleton-row"></div></td>
+        </tr>
+      </ng-container>
+
+      <tr *ngFor="let mat of matriculas; let i = index" class="fade-in" [style.animation-delay]="i * 0.05 + 's'">
+        <td><span class="badge">{{ mat.idMat }}</span></td>
+        <td>{{ mat.curso }}º</td>
+        <td>{{ mat.notaMedia | number:'1.2-2' }}</td>
+        <td>{{ mat.alumno?.nombre }} {{ mat.alumno?.apellidos }}</td>
+        <td>{{ mat.asignatura?.nombre }}</td>
+        <td>{{ mat.asignatura?.profesor?.nombre }} {{ mat.asignatura?.profesor?.apellidos }}</td>
+        <td style="text-align: right;">
+          <button class="btn btn-icon" (click)="editMatricula(mat)" title="Editar">
+            ✏️
+          </button>
+        </td>
+      </tr>
+
+      <tr *ngIf="!loading && matriculas.length === 0 && !error">
+        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+          No hay matrículas registradas.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Edit Modal Overlay -->
+<div class="modal-overlay" *ngIf="isEditing" (click)="cancelEdit()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Editar Matrícula</h2>
+      <button class="close-btn" (click)="cancelEdit()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form #editForm="ngForm" (ngSubmit)="saveEdit()">
+        <div class="form-group">
+          <label for="curso">Curso</label>
+          <input type="number" id="curso" name="curso" [(ngModel)]="selectedMatricula!.curso" required class="form-input">
+        </div>
+        <div class="form-group">
+          <label for="notaMedia">Nota Media</label>
+          <input type="number" step="0.01" id="notaMedia" name="notaMedia" [(ngModel)]="selectedMatricula!.notaMedia" required class="form-input">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!editForm.form.valid">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
