@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Matricula } from '../model/matricula';
 import { environment } from '../environments/environment';
 
@@ -12,9 +12,11 @@ export class MatriculaService {
 
   constructor(
     private _httpClient: HttpClient
-  ) {}
+  ) { }
 
   getMatriculas(): Observable<Matricula[]> {
     return this._httpClient.get<Matricula[]>(this.baseUrl);
   }
+
+
 }

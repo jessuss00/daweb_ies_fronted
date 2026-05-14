@@ -1,5 +1,11 @@
 <div class="container">
   <h2>Listado de Matrículas</h2>
+
+  <div class="filter-buttons" style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+    <button (click)="mostrarAprobados()" class="btn btn-success">Mostrar Aprobados</button>
+    <button (click)="mostrarTodas()" class="btn btn-primary">Mostrar Todas</button>
+  </div>
+
   <table *ngIf="!loading" class="table">
     <thead>
       <tr><th>ID</th><th>Alumno</th><th>Asignatura</th><th>Curso</th><th>Nota</th><th>Acciones</th></tr>
